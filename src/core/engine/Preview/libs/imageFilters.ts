@@ -1,5 +1,8 @@
 import type { ImageFilter } from '@/core/multimedia-controller/types';
 
+/*
+    filter: grayscale(100%);
+*/
 function grayscale(imageData: ImageData) {
     const data = imageData.data;
 
@@ -13,6 +16,9 @@ function grayscale(imageData: ImageData) {
     return imageData;
 }
 
+/*
+     filter: ;
+*/
 function sepia(imageData: ImageData) {
     const data = imageData.data;
 
@@ -29,6 +35,51 @@ function sepia(imageData: ImageData) {
     return imageData;
 }
 
+/*
+    filter: ;
+*/
+function invert(imageData: ImageData) {
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 - data[i];
+        data[i + 1] = 255 - data[i + 1];
+        data[i + 2] = 255 - data[i + 2];
+    }
+
+    return imageData;
+}
+
+/*
+    filter: ; (Фильтр Яркости)
+*/
+function brightness(imageData: ImageData, factor: number = 1.5) {
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.min(255, data[i] * factor);
+        data[i + 1] = Math.min(255, data[i + 1] * factor);
+        data[i + 2] = Math.min(255, data[i + 2] * factor);
+    }
+
+    return imageData;
+}
+
+/*
+     filter: brightness(50%);
+*/
+function darken(imageData: ImageData, factor: number = 0.5) {
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = data[i] * factor;
+        data[i + 1] = data[i + 1] * factor;
+        data[i + 2] = data[i + 2] * factor;
+    }
+
+    return imageData;
+}
+
 function none(imageData: ImageData) {
     return imageData;
 }
@@ -36,6 +87,9 @@ function none(imageData: ImageData) {
 const filterDictionary: Record<ImageFilter, (imageData: ImageData) => ImageData> = {
     grayscale,
     sepia,
+    invert,
+    brightness,
+    darken,
     none,
 };
 

@@ -13,7 +13,7 @@ const WorkerEvent = {
 
 export type Quality = '1080р' | '720р' | '480р';
 
-export type ImageFilter = 'grayscale' | 'sepia' | 'none';
+export type ImageFilter = 'grayscale' | 'sepia' | 'invert' | 'brightness' | 'darken' | 'none';
 
 export type ImagePosition = 'top' | 'right' | 'bottom' | 'left' | 'center';
 
