@@ -8,10 +8,12 @@ type GlobalState = {
   resources: Signal<File[]>;
   isAnyFileLoaded: ReadonlySignal<boolean>;
   media: Signal<MultimediaController>;
-  focusedVideoId: Signal<number | null>;
+  focusedVideoId: Signal<string | null>;
   segmentData: Signal<RenderVideoFragmentEventPayload>;
   sizes: Signal<any>;
   fragments: Signal<Array<any>>;
+  videoVisibility: Signal<Map<string, boolean>>;
+  videoPlayed: Signal<boolean>;
 };
 
 const GlobalContext = createContext({} as GlobalState);
@@ -27,8 +29,10 @@ function createAppState() {
   const segmentData = signal(null);
   const sizes = signal({});
   const fragments = signal([]);
+  const videoVisibility = signal(new Map());
+  const videoPlayed = signal(false);
 
-  return { resources, isAnyFileLoaded, media, focusedVideoId, segmentData, sizes, fragments };
+  return { resources, isAnyFileLoaded, media, focusedVideoId, segmentData, sizes, fragments, videoVisibility, videoPlayed };
 }
 
 export const GlobalState = ({ children }: Props) => {

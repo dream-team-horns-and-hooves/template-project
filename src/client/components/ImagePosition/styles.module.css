@@ -1,0 +1,39 @@
+.hidden {
+    display: none;
+}
+
+.imageDot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    content: '';
+    background: var(--primaryHover);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.imageDot.top {
+    top: 50px;
+    right: 50px;
+}
+
+.imageDot.right {
+    bottom: 50px;
+    right: 50px;
+}
+
+.imageDot.left {
+    top: 50px;
+    left: 50px;
+}
+
+.imageDot.bottom {
+    bottom: 50px;
+    left: 50px;
+}
+
+.imageDot.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}

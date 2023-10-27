@@ -12,11 +12,13 @@ Object.defineProperty(File, "copy_name", {
   },
 });
 
-export const onImportFile = (files: Signal<File[]>, media: Signal<MultimediaController>, focusedVideoId: Signal<number | null>, exclude?: string[] ) => (e: Event) => {
+export const onImportFile = (files: Signal<File[]>, media: Signal<MultimediaController>, focusedVideoId: Signal<string | null>, exclude?: string[] ) => (e: Event) => {
   const element = e.currentTarget as HTMLInputElement;
   let fileList: FileList | null = element.files;
-  if (!fileList) return;
-  if (exclude && exclude.includes(fileList[0].type)) return;
+
+  if (fileList.length === 0) return;
+
+  if (exclude && exclude.includes(fileList[0].type )) return;
 
   void readFile(element.files[0], focusedVideoId, media.value)
 

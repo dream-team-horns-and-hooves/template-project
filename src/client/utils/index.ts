@@ -1,15 +1,14 @@
 import {readVideoFileAsBuffer} from "@/libs";
 import {Signal} from "@preact/signals";
-import {MultimediaController, type RenderVideoFragmentEventPayload} from "@/core";
+import {MultimediaController} from "@/core";
 
-export const readFile = async(file: File, focusedVideoId: Signal<number | null>, media: MultimediaController) => {
+export const readFile = async (file: File, focusedVideoId: Signal<string | null>, media: MultimediaController) => {
   if (file.type === 'image/png' || file.type === 'image/jpeg') {
     if (focusedVideoId.value) {
-      const blob = new Blob([file], { type: file.type });
+      const blob = new Blob([file], {type: file.type});
 
-      media.addImage({ videoId: focusedVideoId.value.toString(), blob });
+      media.addImage({videoId: focusedVideoId.value.toString(), blob});
     }
-
     return;
   }
 
@@ -27,8 +26,8 @@ export function pauseCallback(media: MultimediaController) {
   media.pause();
 }
 
-export function exportCallback(media: MultimediaController) {
-  media.export('720р');
+export function exportCallback(media: MultimediaController, quality: '1080р' | '720р' | '480р') {
+  media.export(quality);
 }
 
 export function downloadBlob(blob: Blob) {
@@ -42,71 +41,15 @@ export function downloadBlob(blob: Blob) {
   window.URL.revokeObjectURL(url);
 }
 
-export function createVideoBlock(
-  segmentData: RenderVideoFragmentEventPayload,
-  sizes: any,
-  focusedVideoId: number | null,
-  media: MultimediaController,
-  fragments: any[]
-) {
-  const parent = document.getElementById('timeline_parent');
+export const updatePosition = (times: [string, number][]) => {
+  times.forEach((time) => {
+    const [videoId, startTime] = time;
 
-  const wrapper = document.createElement('div');
-  const element = document.createElement('div');
-  const button = document.createElement('button');
+    const elements: NodeListOf<HTMLElement> = document.querySelectorAll(`[id="${videoId}"]`);
 
-  wrapper.classList.add('wrapper-video-block');
-
-  const width = (segmentData.duration / segmentData.timescale / 60) * 100;
-  const shiftSize = (segmentData.start / 1000 / 60) * 100;
-
-  element.style.width = `${width.toFixed(1)}%`;
-  element.style.height = `${32}px`;
-  element.style.marginLeft = `${shiftSize.toFixed(1)}%`;
-  element.style.backgroundColor = '#289df2';
-
-  element.classList.add('video-block');
-
-  sizes[segmentData.id] = {
-    w: `${width.toFixed(1)}%`,
-    s: `${shiftSize.toFixed(1)}%`,
-  };
-
-  element.addEventListener('click', event => {
-    focusedVideoId = segmentData.id;
-
-    const rect = element.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-
-    const timestamp = (clickX / rect.width) * segmentData.duration;
-
-    media.preview({
-      videoId: String(segmentData.id),
-      timestamp,
+    elements.forEach((elem) => {
+      const shiftSize = ((startTime / 1000 / 60) * 100).toFixed(1)
+      elem.style.marginLeft = `${shiftSize}%`;
     });
   });
-
-  wrapper.dataset.videoId = String(segmentData.id);
-
-  button.addEventListener('click', () => {
-    media.switchVisibility(segmentData.id);
-    // wrapper.classList.toggle('hidden');
-
-    const elements = document.querySelectorAll(`[data-video-id="${segmentData.id}"]`) as any;
-
-    elements.forEach((e: any) => {
-      e.classList.toggle('hidden');
-    });
-  });
-
-  const text = `${(segmentData.duration / segmentData.timescale).toFixed(1)}s`;
-
-  element.textContent = text;
-  button.textContent = text;
-
-  fragments.push(wrapper);
-
-  // $visibility.append(button);
-  wrapper.append(element);
-  parent.append(wrapper);
 }

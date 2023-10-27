@@ -6,8 +6,8 @@
     align-items: center;
     border-radius: 50%;
     cursor: pointer;
-    width: 47px;
-    height: 47px;
+    width: 60px;
+    height: 60px;
     background-color: var(--play);
 }
 

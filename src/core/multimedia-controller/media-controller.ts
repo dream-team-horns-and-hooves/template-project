@@ -82,7 +82,7 @@ export class MultimediaController {
         this.sendMessageToWorker('EXPORT', { quality });
     }
 
-    public switchVisibility(videoId: number) {
+    public switchVisibility(videoId: string) {
         this.sendMessageToWorker('SWITCH_VISIBILITY_STATE', { videoId });
     }
 

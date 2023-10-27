@@ -130,7 +130,7 @@ export type ClientEventTypes = keyof typeof ClientEvent;
 
 /**/
 export interface RenderVideoFragmentEventPayload {
-    id: number;
+    id: string;
     duration: number;
     timescale: number;
     start: number;
@@ -153,7 +153,7 @@ export type RenderImageFragmentEvent = CustomEvent<
 
 /**/
 export interface RecalculateTimeEventPayload {
-    times: [number, number][];
+    times: [string, number][];
 }
 
 export type RecalculateTimeEvent = CustomEvent<(typeof ClientEvent)['RECALCULATE_TIME'], RecalculateTimeEventPayload>;

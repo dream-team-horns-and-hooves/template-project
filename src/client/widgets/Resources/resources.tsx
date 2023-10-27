@@ -29,13 +29,6 @@ export const Resources = () => {
     console.log('getAllAudio', getAllAudio())
   }
 
-  if (resources.value.length === 1) {
-    const player = playAudio(resources.value[0])
-
-    player.play()
-
-  }
-
   const onChooseItem = (e: Event) => {
     const el = e.target as HTMLInputElement;
     const {id} = el;
