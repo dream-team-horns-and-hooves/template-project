@@ -1,0 +1,19 @@
+.AppHeader {
+    text-align: center;
+}
+
+.AppLogo {
+    font-family: "Nabla", cursive;
+    font-size: 120px;
+    line-height: normal;
+}
+
+.AppMain {
+    border-top: 4px solid var(--backgroundSecondary);
+    padding-top: 25px;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 30px;
+}

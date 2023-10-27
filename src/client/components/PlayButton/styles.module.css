@@ -1,0 +1,24 @@
+
+.playButton {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 47px;
+    height: 47px;
+    background-color: var(--play);
+}
+
+.playButton:hover {
+    background-color: var(--playHover);
+}
+
+.playButton:active {
+    background-color: var(--playActive);
+}
+
+.hidden {
+    display: none;
+}
