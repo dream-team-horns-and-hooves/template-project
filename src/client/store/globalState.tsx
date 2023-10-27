@@ -2,12 +2,16 @@ import { ReadonlySignal, Signal, computed, signal } from "@preact/signals";
 import React from "preact/compat";
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
-import { MultimediaController } from "@core/multimedia-controller";
+import { MultimediaController, type RenderVideoFragmentEventPayload } from "@core/multimedia-controller";
 
 type GlobalState = {
   resources: Signal<File[]>;
   isAnyFileLoaded: ReadonlySignal<boolean>;
-  media: MultimediaController;
+  media: Signal<MultimediaController>;
+  focusedVideoId: Signal<number | null>;
+  segmentData: Signal<RenderVideoFragmentEventPayload>;
+  sizes: Signal<any>;
+  fragments: Signal<Array<any>>;
 };
 
 const GlobalContext = createContext({} as GlobalState);
@@ -17,12 +21,14 @@ type Props = {
 };
 function createAppState() {
   const resources = signal([]);
-
-  const media = new MultimediaController();
-
+  const media = signal(new MultimediaController());
+  const focusedVideoId = signal(null);
   const isAnyFileLoaded = computed(() => !!resources.value[0]);
+  const segmentData = signal(null);
+  const sizes = signal({});
+  const fragments = signal([]);
 
-  return { resources, isAnyFileLoaded, media };
+  return { resources, isAnyFileLoaded, media, focusedVideoId, segmentData, sizes, fragments };
 }
 
 export const GlobalState = ({ children }: Props) => {

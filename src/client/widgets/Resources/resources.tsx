@@ -1,6 +1,7 @@
-import { useCoreContext } from "@client/store/globalState";
-import { List, Button, File } from "@client/components";
-import { useSignal } from "@preact/signals";
+import React from "preact/compat";
+import {useCoreContext} from "@client/store/globalState";
+import {List, Button, File} from "@client/components";
+import {useSignal} from "@preact/signals";
 import cn from "classnames";
 import deleteFile from '@client/assets/delete.svg'
 import copyFile from '@client/assets/copy.svg'
@@ -16,10 +17,9 @@ import {
 } from "@client/store/utils";
 
 import styles from "./styles.module.css";
-import React from "preact/compat";
 
 export const Resources = () => {
-  const { resources, isAnyFileLoaded } = useCoreContext();
+  const {resources, isAnyFileLoaded, media, focusedVideoId} = useCoreContext();
   const chosen = useSignal<string[]>([]);
   const createAudio = () => resources.value.forEach((file) => createAudioNode(file))
 
@@ -38,13 +38,14 @@ export const Resources = () => {
 
   const onChooseItem = (e: Event) => {
     const el = e.target as HTMLInputElement;
-    const { id } = el;
+    const {id} = el;
 
     chosen.value = chosen.value.includes(id) ? chosen.value.filter((el) => el !== id) : [...chosen.value, id];
   };
 
   const disabledBtn = chosen.value.length === 0;
 
+  console.log(media.value)
   return (
     <div className={styles.wrapper}>
       {!isAnyFileLoaded.value && (
@@ -52,7 +53,10 @@ export const Resources = () => {
       )}
       <List resources={resources} chosen={chosen} onChoose={onChooseItem}/>
       <div className={cn(styles.actions)}>
-        <File onClick={onImportFile(resources)} icon={importFile} alt='import'/>
+        <File
+          onClick={onImportFile(resources, media, focusedVideoId, ['image/png', 'image/jpeg'])}
+          icon={importFile} alt='import'
+        />
         <Button disabled={disabledBtn} onClick={onDeleteFile(resources, chosen)} icon={deleteFile} alt='delete'/>
         <Button disabled={true} onClick={onCopyFile(resources, chosen)} icon={copyFile} alt='copy'/>
       </div>

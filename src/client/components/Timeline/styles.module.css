@@ -1,11 +1,36 @@
 .timelineWrapper {
     display: grid;
     grid-template-columns: 40px auto;
+    background: var(--timeline);
+    width: 100%;
 }
 
 .timeline {
     width: 100%;
     background: var(--timeline);
+}
+
+.timeline .hide {
+    background: var(--grey);
+    pointer-events: none;
+
+}
+
+.wrapper-video-block {
+    position: relative;
+    padding: 4px 0;
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.timeline_wrapper .wrapper-video-block .hidden::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #e7e1e1b0;
+}
+
+.wrapper-video-block:first-of-type {
+    border-top: 1px solid #d8d8d8;
 }
 
 .toggle {

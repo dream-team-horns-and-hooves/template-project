@@ -129,7 +129,7 @@ const ClientEvent = {
 export type ClientEventTypes = keyof typeof ClientEvent;
 
 /**/
-interface RenderVideoFragmentEventPayload {
+export interface RenderVideoFragmentEventPayload {
     id: number;
     duration: number;
     timescale: number;

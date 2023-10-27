@@ -3,9 +3,11 @@ export const getAllAudio = () => [...document.querySelectorAll('audio')];
 export const deleteAllAudio = () => getAllAudio().map(item => item.remove());
 
 export const createAudioNode = (file: File) => {
-  let audio= document.createElement('audio');
-  audio.id = `${file.name}`;
-  document.getElementById('app')?.appendChild(audio)
+  if (file.type === 'video/mp4') {
+    let audio= document.createElement('audio');
+    audio.id = `${file.name}`;
+    document.getElementById('app')?.appendChild(audio)
+  }
 }
 
 export const playAudio = (file: File) => {

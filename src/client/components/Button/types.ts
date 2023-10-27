@@ -1,5 +1,6 @@
 export interface ButtonProps{
   title?: string
+  id?: string
   icon?: string
   className?: string
   size?: string

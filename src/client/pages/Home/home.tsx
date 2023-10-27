@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import React from "preact/compat";
 
 export const Home = () => {
-  const {resources, isAnyFileLoaded} = useCoreContext();
+  const {resources, isAnyFileLoaded, media, focusedVideoId} = useCoreContext();
 
   return (
     <>
@@ -22,7 +22,7 @@ export const Home = () => {
           <File
             className={styles.modalButton}
             alt="import"
-            onClick={onImportFile(resources)}
+            onClick={onImportFile(resources, media, focusedVideoId)}
             icon={importFile}
             title={Text.placeholderButton}
             size='55px'
