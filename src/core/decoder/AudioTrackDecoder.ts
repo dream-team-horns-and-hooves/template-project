@@ -74,6 +74,10 @@ export class AudioTrackDecoder extends AbstractMediaTrackDecoder<DecodedAudioFra
         return this.trackInfo;
     }
 
+    public getDecoder() {
+        return this.decoder;
+    }
+
     /**
      * Получает готовые аудио-samples для декодирования.
      *
@@ -125,21 +129,13 @@ export class AudioTrackDecoder extends AbstractMediaTrackDecoder<DecodedAudioFra
      * @private
      */
     private saveFrame(frame: AudioData) {
-        this.frames.push(frame);
-        this.decodedFramesCount += 1;
-
-        // this.sendFrames();
-
-        if (this.isDecodingComplete) {
-            this.emitter.emit('decoded-complete');
-        }
+        this.sendFrames(frame);
     }
 
     /**
      * @protected
      */
     protected async onDemuxComplete() {
-        console.log('AUDIO onDemuxComplete');
         await this.decoder.flush();
         this.demuxer.deleteUsedVideoSamples(this.trackInfo.id, this.trackInfo.totalSamples);
     }
@@ -148,7 +144,6 @@ export class AudioTrackDecoder extends AbstractMediaTrackDecoder<DecodedAudioFra
      * @protected
      */
     protected async onDecodeComplete() {
-        console.log('AUDIO onDecodeComplete');
         super.onDecodeComplete();
 
         await this.decoder.flush();

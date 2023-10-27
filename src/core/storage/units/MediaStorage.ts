@@ -44,6 +44,10 @@ export class MediaStorage {
         return this.decoder.getVideoDecoder();
     }
 
+    get audioDecoder() {
+        return this.decoder.getAudioDecoder();
+    }
+
     get videoInfo() {
         return this.video;
     }

@@ -89,6 +89,14 @@ export class Decoder {
     }
 
     /**
+     * Получить аудио-decoder
+     * @public
+     */
+    getAudioDecoder() {
+        return this.audioDecoder.getDecoder();
+    }
+
+    /**
      * Начинает процесс декодирования видео-данных и возвращает результат
      * @public
      */

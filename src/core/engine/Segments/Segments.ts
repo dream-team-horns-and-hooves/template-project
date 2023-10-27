@@ -2,8 +2,8 @@ import { EventEmitter } from '@/core/emitter';
 import { ImageFilter, ImagePosition } from '@/core/multimedia-controller/types';
 import type { Storage } from '@/core/storage';
 import type { MediaStorage } from '@/core/storage/units/MediaStorage';
-import { DecodedVideoFramesResultFn } from '@/core/types/decoder';
-import { VideoTrackInfo } from '@/core/types/demuxer';
+import { DecodedVideoFramesResultFn, DecodedAudioFramesResultFn } from '@/core/types/decoder';
+import { VideoTrackInfo, AudioTrackInfo } from '@/core/types/demuxer';
 import { generateId } from '@/libs/generateId';
 
 type Events = {
@@ -22,6 +22,11 @@ interface VideoSegmentConstructor {
     id: string;
     media: MediaStorage;
     positionAtCreated: number;
+}
+
+interface AudioSegmentsConstructor {
+    id: string;
+    media: MediaStorage;
 }
 
 export interface VideoSegmentInfo {
@@ -194,8 +199,6 @@ export class VideoSegments {
 
     private orderOfInsertionByVisibilityState: Map<number, { id: string; visibility: boolean }> = new Map();
     private numberOfTrackedVideoSegmentPosition: number = 0;
-
-    constructor() {}
 
     async create(media: MediaStorage) {
         const id = generateId();
@@ -389,11 +392,71 @@ class FilterSegments {
     }
 }
 
+class AudioSegment {
+    private readonly media: MediaStorage;
+    private originalInfo: AudioTrackInfo;
+
+    readonly id: string;
+
+    private chunksWorker: ChunksWorker;
+    private decoder: AudioDecoder;
+    private frameChannel: (callback: DecodedAudioFramesResultFn) => void;
+
+    constructor({ id, media }: AudioSegmentsConstructor) {
+        this.id = id;
+        this.media = media;
+
+        this.decoder = this.media.audioDecoder;
+        this.frameChannel = this.media.onAudioFrames.bind(this.media);
+
+        this.originalInfo = this.media.audioInfo;
+    }
+
+    async startProcessGettingChunks() {
+        const chunks = await this.media.retrieveAudioChunks();
+        this.chunksWorker = new ChunksWorker(chunks);
+
+        return this;
+    }
+
+    getInfo() {
+        return this.originalInfo;
+    }
+
+    getEngine() {
+        return {
+            decoder: this.decoder,
+            chunksWorker: this.chunksWorker,
+            frameChannel: this.frameChannel.bind(this),
+        };
+    }
+}
+
+class AudioSegments {
+    segmentsByVideoId: Map<string, AudioSegment> = new Map();
+
+    async create(videoId: string, media: MediaStorage) {
+        const id = generateId();
+        const audioSegment = await new AudioSegment({
+            id,
+            media,
+        }).startProcessGettingChunks();
+
+        this.segmentsByVideoId.set(videoId, audioSegment);
+    }
+
+    getAudioSegmentByVideoId(videoId: string) {
+        return this.segmentsByVideoId.get(videoId);
+    }
+}
+
 export class Segments {
     private storage: Storage;
     private emitter: EventEmitter<Events>;
 
     private videoSegments: VideoSegments;
+    private audioSegments: AudioSegments;
+
     private imageSegments: ImageSegments;
     private filterSegments: FilterSegments;
 
@@ -404,13 +467,17 @@ export class Segments {
         this.emitter = new EventEmitter();
 
         this.videoSegments = new VideoSegments();
+        this.audioSegments = new AudioSegments();
+
         this.imageSegments = new ImageSegments();
         this.filterSegments = new FilterSegments();
     }
 
     async parseMediaSegment(mediaBuffer: ArrayBuffer) {
         const createdMedia = await this.storage.addMediaToStorage(mediaBuffer);
+
         const videoSegmentId = await this.createVideoSegment(createdMedia);
+        await this.createAudioSegment(videoSegmentId, createdMedia);
 
         this.increasingOrderSizeAfterAddingVideo(videoSegmentId);
     }
@@ -419,13 +486,15 @@ export class Segments {
         const videoSegmentInfo = await this.videoSegments.create(media);
 
         this.filterSegments.setDefaultFilter(videoSegmentInfo.id);
-
         this.emitter.emit('video-has-been-added', videoSegmentInfo);
+
         return videoSegmentInfo.id;
     }
 
     /**/
-    private createAudioSegment(media: MediaStorage) {}
+    private async createAudioSegment(videoId: string, media: MediaStorage) {
+        await this.audioSegments.create(videoId, media);
+    }
 
     /**/
     async createImageSegment(relatedVideoId: string, imageBlob: Blob) {
@@ -475,6 +544,10 @@ export class Segments {
 
     getVideoSegmentById(videoId: string) {
         return this.videoSegments.getSegmentById(videoId);
+    }
+
+    getAudioSegmentById(videoId: string) {
+        return this.audioSegments.getAudioSegmentByVideoId(videoId);
     }
 
     getImageSegmentsByVideoId(videoId: string) {

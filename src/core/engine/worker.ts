@@ -1,6 +1,8 @@
-import {PreviewCanvas} from './Preview';
+import { PreviewCanvas } from './Preview';
 import { Segments } from './Segments';
 import { Engine } from './Engine';
+
+import { Builder } from '../builder';
 
 import { Storage } from '../storage';
 
@@ -11,25 +13,31 @@ const storage = new Storage();
 
 const segments = new Segments(storage);
 
+const builder = new Builder(segments);
 const engine = new Engine({
     canvas: previewCanvas,
     segments,
 });
 
 segments.onVideoAdded(data => {
-    self.postMessage({ type: 'RENDER_VIDEO_FRAGMENT', payload: data });
+    globalThis.postMessage({ type: 'RENDER_VIDEO_FRAGMENT', payload: data });
 });
 
 segments.onImageAdded(data => {
-    self.postMessage({ type: 'RENDER_IMAGE_FRAGMENT', payload: { id: data } });
+    globalThis.postMessage({ type: 'RENDER_IMAGE_FRAGMENT', payload: { id: data } });
 });
 
 segments.onTimePositionUpdated(data => {
-    console.log(data)
-    self.postMessage({ type: 'RECALCULATE_TIME', payload: { times: data } });
+    console.log(data);
+    globalThis.postMessage({ type: 'RECALCULATE_TIME', payload: { times: data } });
 });
 
-self.onmessage = async function (event: MessageEvent<WorkerEvents>) {
+builder.onFinish(buffer => {
+    console.log('buffer', buffer)
+    globalThis.postMessage({ type: 'FINISH', payload: { buffer } });
+});
+
+globalThis.onmessage = async function (event: MessageEvent<WorkerEvents>) {
     const { type, payload } = event.data;
 
     switch (type) {
@@ -80,18 +88,7 @@ self.onmessage = async function (event: MessageEvent<WorkerEvents>) {
         }
         case 'EXPORT': {
             console.log('EXPORT', payload);
-            // engine.test();
-
-            // builder.init(videoSegments, imageSegments, storage);
-
-            // const result: ArrayBuffer = await builder.start();
-
-            // self.postMessage({
-            //     type: 'FINISH',
-            //     payload: {
-            //         buffer: result,
-            //     },
-            // });
+            builder.configure(payload.quality);
             break;
         }
         default:

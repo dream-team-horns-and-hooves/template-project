@@ -28,6 +28,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: var(--backgroundPrimary);
 }
 
 ul,
@@ -51,12 +52,6 @@ input[type="file"] {
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 20px 20px;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        background-color: var(--backgroundPrimary);
-    }
 }
 
 .logo {
