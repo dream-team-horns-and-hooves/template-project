@@ -1,0 +1,29 @@
+.imageWrapper {
+    display: grid;
+    grid-template-columns: 45px auto;
+    padding: 8px 0;
+}
+
+.image {
+    width: 100%;
+    border-radius: 6px;
+    background: var(--timeline);
+    overflow: auto;
+}
+
+.image.hide {
+    opacity: .3;
+    pointer-events: none;
+}
+
+.element {
+    background: var(--audio);
+    border-radius: 6px;
+}
+
+.toggle {
+    border-radius: 6px;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+}

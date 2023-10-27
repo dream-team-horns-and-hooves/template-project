@@ -1,16 +1,29 @@
 .scene{
     display: grid;
-    grid-template-rows: minmax(45%, 100%) minmax(45%, 100%) 40px;
+    grid-template-columns: auto;
+    grid-template-rows: 450px 410px 40px;
 }
 
 .previewWrapper{
     position: relative;
     background: var(--black);
+    width: 800px;
+    height: 450px;
+    border: 5px solid var(--greyLight);
 }
 
 .preview {
     width: 800px;
     height: 450px;
+}
+
+.imagePreview {
+    position: absolute;
+    z-index: 90;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .play {
@@ -22,7 +35,24 @@
 
 .timelineWrapper{
     margin-top: 35px;
+    max-height: 400px;
+    width: 810px;
     background: transparent;
+    overflow: auto;
+}
+
+.empty {
+    background: var(--backgroundPrimary);
+    opacity: 0.4;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyLabel {
+    font-size: 24px;
+    color: var(--timeline);
 }
 
 .wrapper{
@@ -36,4 +66,35 @@
     display: flex;
     background: var(--primary);
     justify-content: space-between;
+}
+
+.modalContent {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto;
+    align-items: center;
+    justify-items: center;
+}
+
+.modalTitle {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--black);
+}
+
+.buttonBlock {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+
+.modalButton {
+    padding: 20px 30px;
+    width: 100px;
+    max-width: 400px;
+    font-size: 24px;
+    gap: 10px;
 }

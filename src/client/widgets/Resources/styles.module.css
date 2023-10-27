@@ -5,6 +5,7 @@
     align-items: center;
     background-color: var(--backgroundSecondary);
     position: relative;
+    max-height: 900px;
 }
 
 .title{
@@ -20,8 +21,9 @@
 
 .text{
     text-align: left;
-    overflow: hidden;
+    overflow: auto;
     white-space: nowrap;
+    text-wrap: normal;
     text-overflow: ellipsis;
 }
 

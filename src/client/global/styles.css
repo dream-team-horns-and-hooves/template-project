@@ -7,10 +7,12 @@
     --backgroundSecondary: #fff;
     --primary: #F2D535;
     --primaryHover: #FFEA76;
+    --primaryHover2: rgba(255, 234, 118, 0.6);
     --primaryActive: #EFCF1C;
     --black: #000;
     --grey: #949191;
     --greyLight: #C3C1C1;
+    --greenDark: rgba(49, 86, 91, 0.4);
     --video: #FC7BD8;
     --audio: #7EA560;
     --decorate: #5A9DED;
@@ -28,7 +30,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: var(--backgroundPrimary);
+    background-color: var(--greenDark);
 }
 
 ul,
@@ -60,4 +62,25 @@ input[type="file"] {
     margin-bottom: 35px;
     text-align: center;
     line-height: normal;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 6px;
 }

@@ -9,9 +9,9 @@ export function getCoordinatesByPosition(
 ) {
     switch (position) {
         case 'top':
-            return [0, 0];
-        case 'right': {
             return [canvasWidth - width, 0];
+        case 'right': {
+            return [canvasWidth - width, canvasHeight - height];
         }
         case 'bottom': {
             return [0, canvasHeight - height];

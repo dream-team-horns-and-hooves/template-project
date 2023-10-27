@@ -1,0 +1,1 @@
+export type PositionAlias = "top" | "right" | "bottom" | "left" | "center"
