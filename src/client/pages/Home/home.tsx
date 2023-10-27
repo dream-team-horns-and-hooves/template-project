@@ -2,7 +2,7 @@ import React from "preact/compat";
 import {Resources, Scene, Filters} from "@client/widgets";
 import {useCoreContext} from "@client/store/globalState";
 import {File, Modal} from "@client/components";
-import {onImportFile} from "@client/store/utils";
+import {onImportFile} from "@client/utils";
 import importFile from "@client/assets/add-file.svg";
 
 import { Text } from './consts'

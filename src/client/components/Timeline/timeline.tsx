@@ -1,16 +1,16 @@
+import React from "preact/compat";
 import cn from "classnames";
-import {useEffect, useState} from "preact/compat";
-import {Button} from "@client/components";
+
 import show from '@client/assets/show.svg';
 import hide from '@client/assets/hide.svg';
-
-import {TimelineProps} from "./types";
-import styles from './styles.module.css'
-import React from "preact/compat";
 import {useCoreContext} from "@client/store";
+import {Button} from "@client/components";
 
-export const Timeline = ({ data, isShow }: TimelineProps) => {
-  const { focusedVideoId, media, sizes, videoPlayed,} = useCoreContext();
+import {type TimelineProps} from "./types";
+import styles from './styles.module.css'
+
+export const Timeline = ({data, isShow}: TimelineProps) => {
+  const {focusedVideoId, media, sizes, videoPlayed,} = useCoreContext();
   const toggleTimeline = () => {
     media.value.switchVisibility(data.id);
   }
@@ -45,13 +45,16 @@ export const Timeline = ({ data, isShow }: TimelineProps) => {
   }
 
   return (
-    <>
-      <div className={styles.timelineWrapper}>
-        <Button className={cn(styles.toggle, {[styles.hide]: !isShow})} alt='toggle' icon={!isShow ? hide : show} onClick={toggleTimeline}/>
-        <div className={cn(styles.timeline, {[styles.hide]: !isShow})}>
-          <div id={data.id} style={style} className={cn(styles.element)} onClick={(event) => getPreview(event)}></div>
-        </div>
+    <div className={styles.timelineWrapper}>
+      <Button
+        className={cn(styles.toggle, {[styles.hide]: !isShow})}
+        alt='toggle'
+        icon={!isShow ? hide : show}
+        onClick={toggleTimeline}
+      />
+      <div className={cn(styles.timeline, {[styles.hide]: !isShow})}>
+        <div id={data.id} style={style} className={cn(styles.element)} onClick={(event) => getPreview(event)}></div>
       </div>
-    </>
+    </div>
   )
 }

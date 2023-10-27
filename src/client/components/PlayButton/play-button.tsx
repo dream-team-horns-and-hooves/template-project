@@ -1,11 +1,11 @@
-import {PlayButtonProps} from "./types";
+import React from "preact/compat";
 import cn from "classnames";
 
 import play from "@client/assets/play.svg";
 import pause from "@client/assets/pause.svg";
 
+import {PlayButtonProps} from "./types";
 import styles from './styles.module.css'
-import React from "preact/compat";
 
 export const PlayButton = ({onClick, hide, active, className}: PlayButtonProps) => (
   <div

@@ -11,4 +11,6 @@ export const Text = {
   placeholderFullHD: Quality.FullHD,
   placeholderHD: Quality.HD,
   placeholderED: Quality.ED,
+  placeholderLoadingLabel: 'Идет процесс сборки видео',
+  placeholderLoadingText: 'Пожалуйста подождите :)'
 }

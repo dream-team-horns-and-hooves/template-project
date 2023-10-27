@@ -68,6 +68,11 @@
     justify-content: space-between;
 }
 
+.modalWrapper div {
+    padding: 0;
+    border-radius: 6px;
+}
+
 .modalContent {
     width: 100%;
     height: 100%;
@@ -77,8 +82,32 @@
     justify-items: center;
 }
 
+.loading {
+    animation: pulse-animation 1s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        background: var(--primary);
+    }
+    50% {
+        background: var(--primaryHover);
+    }
+    100% {
+        background: var(--primary);
+    }
+}
+
+
 .modalTitle {
     text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--black);
+}
+
+.modalLoadingTitle {
+    text-align: start;
     font-size: 32px;
     font-weight: 400;
     color: var(--black);

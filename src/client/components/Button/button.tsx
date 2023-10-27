@@ -1,8 +1,8 @@
-import {ButtonProps} from "./types";
+import React from "preact/compat";
 import cn from "classnames";
 
+import {ButtonProps} from "./types";
 import styles from './styles.module.css'
-import React from "preact/compat";
 
 export const Button = ({title, icon, onClick, className, size = '27px', disabled, alt, id}: ButtonProps) => (
   <div

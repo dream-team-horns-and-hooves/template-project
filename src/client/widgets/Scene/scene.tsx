@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "preact/compat";
+import cn from "classnames";
 
 import addImage from '@client/assets/add-image.svg';
 import crop from '@client/assets/crop.svg';
@@ -6,16 +7,14 @@ import trim from '@client/assets/trim.svg';
 import addText from '@client/assets/add-text.svg';
 import deleteLine from '@client/assets/delete.svg';
 import save from '@client/assets/export.svg';
+
+import {type PositionAlias} from "@client/widgets/Scene/types";
 import {useCoreContext} from "@client/store/globalState";
 import {Button, File, Image, Modal, PlayButton, Timeline, ImagePosition} from "@client/components";
-import {downloadBlob, exportCallback, pauseCallback, playCallback, updatePosition} from "@client/utils";
-import {onImportFile} from "@client/store";
+import {downloadBlob, exportCallback, pauseCallback, playCallback, updatePosition, onImportFile} from "@client/utils";
 
 import {Text, Positions, Quality} from "./consts";
-
 import styles from "./styles.module.css";
-import {PositionAlias} from "@client/widgets/Scene/types";
-import cn from "classnames";
 
 export const Scene = () => {
   const {
@@ -32,6 +31,7 @@ export const Scene = () => {
   const [video, setVideo] = useState([])
   const [showImagePosition, setShowImagePosition] = useState(false);
   const [showQualityModal, setShowQualityModal] = useState(false);
+  const [showLodaingModal, setShowLoadingModal] = useState(false);
   const [image, setImage] = useState<Array<{ id: string, image: string }>>([])
 
   const toggleHandler = (action: React.SetStateAction<boolean>) => action(prev => !prev);
@@ -94,11 +94,17 @@ export const Scene = () => {
 
   media.value.onFinish(data => {
     if (data) {
-      setShowQualityModal(false)
+      setShowLoadingModal(false)
     }
     const blob = new Blob([data.buffer]);
     downloadBlob(blob);
   });
+
+  const exportVideo = (quality: Quality) => {
+    toggleHandler(setShowQualityModal);
+    toggleHandler(setShowLoadingModal);
+    exportCallback(media.value, quality)
+  }
 
   return (
     <>
@@ -147,6 +153,12 @@ export const Scene = () => {
           />
         </div>
       </div>
+      <Modal onShow={showLodaingModal} classNames={styles.modalWrapper} text={Text.placeholderLoadingLabel}>
+        <div className={cn(styles.modalContent, styles.loading)}>
+          <span className={styles.modalLoadingTitle}>{Text.placeholderLoadingLabel}</span>
+          <span className={styles.modalTitle}>{Text.placeholderLoadingText}</span>
+        </div>
+      </Modal>
       <Modal onShow={showQualityModal} onClose={() => toggleHandler(setShowQualityModal)} text={Text.placeholderLabel}>
         <div className={styles.modalContent}>
           <span className={styles.modalTitle}>{Text.placeholderLabel}</span>
@@ -156,7 +168,7 @@ export const Scene = () => {
               alt='full hd'
               icon={save}
               title={Text.placeholderFullHD}
-              onClick={() => exportCallback(media.value, Quality.FullHD)}
+              onClick={() => exportVideo(Quality.FullHD)}
               size='30px'
             />
             <Button
@@ -164,7 +176,7 @@ export const Scene = () => {
               alt='hd'
               icon={save}
               title={Text.placeholderHD}
-              onClick={() => exportCallback(media.value, Quality.HD)}
+              onClick={() => exportVideo(Quality.HD)}
               size='30px'
             />
             <Button
@@ -172,7 +184,7 @@ export const Scene = () => {
               alt='ed'
               icon={save}
               title={Text.placeholderED}
-              onClick={() => exportCallback(media.value, Quality.ED)}
+              onClick={() => exportVideo(Quality.ED)}
               size='30px'
             />
           </div>

@@ -1,6 +1,6 @@
 import { Signal } from "@preact/signals";
-import {readFile} from "@client/utils";
 import {MultimediaController} from "@/core";
+import {readVideoFileAsBuffer} from "@/libs";
 
 Object.defineProperty(File, "copy_name", {
   writable: true,
@@ -24,10 +24,12 @@ export const onImportFile = (files: Signal<File[]>, media: Signal<MultimediaCont
 
   files.value = [...files.value, ...Array.from(fileList)];
 };
+
 export const onDeleteFile = (files: Signal<File[]>, ids: Signal<string[]>) => () => {
   files.value = files.value.filter((val) => !ids.value.includes(val.name));
   ids.value = [];
 };
+
 export const onCopyFile = (files: Signal<File[]>, ids: Signal<string[]>) => () => {
   const filesCopy: File[] = [];
   const copyCount = ids.value.reduce((acc, item) => {
@@ -42,3 +44,30 @@ export const onCopyFile = (files: Signal<File[]>, ids: Signal<string[]>) => () =
 
   files.value = [...files.value, ...filesCopy];
 };
+
+export const readFile = async (file: File, focusedVideoId: Signal<string | null>, media: MultimediaController) => {
+  if (file.type === 'image/png' || file.type === 'image/jpeg') {
+    if (focusedVideoId.value) {
+      const blob = new Blob([file], {type: file.type});
+
+      media.addImage({videoId: focusedVideoId.value.toString(), blob});
+    }
+    return;
+  }
+
+  if (file.type === 'video/mp4') {
+    const buffer = await readVideoFileAsBuffer(file);
+    media.addVideo(buffer);
+  }
+}
+
+export function downloadBlob(blob: Blob) {
+  let url = window.URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = 'craft.mp4';
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+}

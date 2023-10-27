@@ -1,7 +1,7 @@
 import React, {forwardRef} from "preact/compat";
-import {type CheckBoxProps} from "./types";
 import IconDefault from "@client/assets/check-icon.svg";
 
+import {type CheckBoxProps} from "./types";
 import styles from "./styles.module.css";
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckBoxProps>(

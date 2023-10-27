@@ -1,4 +1,6 @@
-export const filters = [
+import {Filters} from "./types";
+
+export const filters: Filters[] = [
     { label: 'Без фильтра', value: 'none', filter: 'none' },
     { label: 'Грусть', value: 'grayscale', filter: 'grayscale(100%)' },
     { label: 'Ностальгия', value: 'sepia', filter: 'sepia(100%)' },
@@ -6,12 +8,3 @@ export const filters = [
     { label: 'Полдень', value: 'brightness', filter: 'brightness(150%)' },
     { label: 'Сумерки', value: 'darken', filter: 'brightness(50%)' },
 ];
-
-export const stubFilters = new Array(10)
-    .fill(0)
-    .map(
-        () =>
-            `rgba(${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 200)}, ${Math.floor(
-                Math.random() * 255
-            )}, 0.4)`
-    );

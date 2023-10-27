@@ -1,8 +1,8 @@
 // import {Checkbox} from "@client/components";
+import React from "preact/compat";
 import {ListProps} from "./types";
 
 import styles from "./styles.module.css";
-import React from "preact/compat";
 
 export const List = ({resources, chosen, onChoose}: ListProps) => {
   return (
@@ -15,6 +15,7 @@ export const List = ({resources, chosen, onChoose}: ListProps) => {
             <div className={styles.img} style={{backgroundImage: `url(${URL.createObjectURL(res)})`, backgroundSize: 'contain', content: ''}}></div>
           )}
           <span className={styles.text}>{res.name}</span>
+          {/* ToDo: maybe functional */}
           {/*<Checkbox id={res.name} checked={chosen.value.includes(res.name)} onChange={onChoose}/>*/}
         </li>
       ))}

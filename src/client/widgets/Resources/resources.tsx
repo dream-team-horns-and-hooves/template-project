@@ -1,20 +1,19 @@
 import React from "preact/compat";
+import cn from "classnames";
+
 import {useCoreContext} from "@client/store/globalState";
 import {List, Button, File} from "@client/components";
 import {useSignal} from "@preact/signals";
-import cn from "classnames";
 import deleteFile from '@client/assets/delete.svg'
 import copyFile from '@client/assets/copy.svg'
 import importFile from '@client/assets/add-file.svg'
 import {
   deleteAllAudio,
-  getAllAudio,
   createAudioNode,
-  playAudio,
   onDeleteFile,
   onCopyFile,
   onImportFile
-} from "@client/store/utils";
+} from "@client/utils";
 
 import styles from "./styles.module.css";
 
@@ -26,7 +25,6 @@ export const Resources = () => {
   if (resources.value.length) {
     deleteAllAudio();
     createAudio();
-    console.log('getAllAudio', getAllAudio())
   }
 
   const onChooseItem = (e: Event) => {
@@ -38,7 +36,6 @@ export const Resources = () => {
 
   const disabledBtn = chosen.value.length === 0;
 
-  console.log(media.value)
   return (
     <div className={styles.wrapper}>
       {!isAnyFileLoaded.value && (
