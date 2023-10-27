@@ -29,6 +29,7 @@ export class Scene {
 
         this.drawFrame(frame);
         this.drawImages(images);
+        this.drawWatermark();
         this.applyFilter(appliedFilter);
 
         return this.canvas;
@@ -51,6 +52,25 @@ export class Scene {
         const { x, y } = this.calculateCenteredImagePosition(width, height);
 
         this.ctx.drawImage(frame, x, y, this.width, this.height);
+    }
+
+    drawWatermark() {
+        const watermarkText = 'Clip Craft';
+        const fontSize = 68;
+        const fontFamily = 'Arial';
+        const textColor = 'rgba(255, 255, 255, 0.5)';
+
+        this.ctx.font = `${fontSize}px ${fontFamily}`;
+        this.ctx.fillStyle = textColor;
+        this.ctx.textAlign = 'center';
+
+        const canvasWidth = this.width;
+        const canvasHeight = this.height;
+
+        const textX = canvasWidth / 2;
+        const textY = canvasHeight / 2;
+
+        this.ctx.fillText(watermarkText, textX, textY);
     }
 
     /**
