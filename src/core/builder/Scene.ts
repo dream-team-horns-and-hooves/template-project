@@ -56,9 +56,9 @@ export class Scene {
 
     drawWatermark() {
         const watermarkText = 'Clip Craft';
-        const fontSize = 68;
+        const fontSize = 72;
         const fontFamily = 'Arial';
-        const textColor = 'rgba(255, 255, 255, 0.5)';
+        const textColor = 'rgba(255, 255, 255, 0.3)';
 
         this.ctx.font = `${fontSize}px ${fontFamily}`;
         this.ctx.fillStyle = textColor;
