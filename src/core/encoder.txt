@@ -1,0 +1,6 @@
+ codec: codec,
+height,
+width,
+bitrateMode: "variable",
+bitrate: Math.min(bitrate, 2_000_000),
+framerate: fps,

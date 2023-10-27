@@ -1,0 +1,27 @@
+.wrapper {
+    position: relative;
+    overflow: auto;
+    width: 300px;
+    height: 100%;
+}
+
+.wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.item {
+    margin: 10px 12px;
+    padding-left: 40px;
+    padding-right: 10px;
+    min-height: 60px;
+    background: var(--greyLight);
+    border-radius: 6px;
+    display: block;
+    gap: 10px;
+    color: #000;
+    position: relative;
+}
+
+.text {
+    word-wrap: break-word;
+}

@@ -1,0 +1,68 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    --backgroundPrimary: #494957;
+    --backgroundSecondary: #fff;
+    --primary: #F2D535;
+    --primaryHover: #FFEA76;
+    --primaryActive: #EFCF1C;
+    --black: #000;
+    --grey: #949191;
+    --greyLight: #C3C1C1;
+    --video: #FC7BD8;
+    --audio: #7EA560;
+    --decorate: #5A9DED;
+    --play: rgba(194, 194, 194, 0.50);
+    --playHover: rgba(194, 194, 194, 0.80);
+    --playActive: #C2C2C2;
+    --timeline: #D9D9D9;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,
+li,
+button {
+    border: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    padding: 0;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+#app {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        background-color: var(--backgroundPrimary);
+    }
+}
+
+.logo {
+    font-family: 'Nabla', cursive;
+    font-size: 80px;
+    margin-bottom: 35px;
+    text-align: center;
+    line-height: normal;
+}
